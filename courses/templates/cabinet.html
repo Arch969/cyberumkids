@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="hero hero-bright">
+  <h1>Твой кабинет 🚀</h1>
+  <p>Следи за прогрессом и копи звёзды!</p>
+</section>
+
+<section class="cabinet-grid">
+  <div class="card big">
+    <div class="row">
+      <div class="avatar">
+        {% if profile.avatar_url %}
+          <img src="{{ profile.avatar_url }}" alt="avatar"/>
+        {% else %}
+          <div class="avatar-fallback">🙂</div>
+        {% endif %}
+      </div>
+      <div class="info">
+        <h2>{{ profile.display_name|default:profile.username }}</h2>
+          <div class="stars-line">
+            <img src="{% static 'img/braincoin.png' %}" alt="Braincoin"
+                 style="width:36px;height:36px;object-fit:contain;vertical-align:middle;margin-right:6px;">
+            <span id="cabinet-stars" class="stars-count">{{ profile.stars }}</span>
+            <button id="demo-earn" class="btn-primary tiny bouncy">
+              Забрать +5
+              <img src="{% static 'img/braincoin.png' %}" alt="Braincoin"
+                   style="width:18px;height:18px;object-fit:contain;vertical-align:middle;margin-left:4px;">
+            </button>
+          </div>
+
+        <div class="progress-line">
+          Пройдено уроков: <b>{{ stats.done_lessons }}</b> из <b>{{ stats.total_lessons }}</b>
+          ({{ stats.completion }}%)
+        </div>
+      </div>
+    </div>
+    <canvas id="progressChart" width="600" height="300" style="max-width:100%"></canvas>
+  </div>
+
+  <div class="card">
+    <h3>Достижения</h3>
+      <ul class="ach-list">
+        <li>🏁 Начал(а) обучение — +10
+          <img src="{% static 'img/braincoin.png' %}" alt="Braincoin"
+               style="width:18px;height:18px;object-fit:contain;vertical-align:middle;margin-left:4px;">
+        </li>
+        <li>🎯 5 уроков подряд — +15
+          <img src="{% static 'img/braincoin.png' %}" alt="Braincoin"
+               style="width:18px;height:18px;object-fit:contain;vertical-align:middle;margin-left:4px;">
+        </li>
+        <li>🏆 Закончил(а) курс — +50
+          <img src="{% static 'img/braincoin.png' %}" alt="Braincoin"
+               style="width:18px;height:18px;object-fit:contain;vertical-align:middle;margin-left:4px;">
+        </li>
+      </ul>
+
+  </div>
+</section>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+(async function(){
+  // Получаем профиль и звёзды
+  const r = await fetch('/api/v1/me/');
+  if (r.ok) {
+    const me = await r.json();
+    const $hdr = document.getElementById('stars-count');
+    const $cab = document.getElementById('cabinet-stars');
+    if ($hdr) $hdr.textContent = me.stars;
+    if ($cab) $cab.textContent = me.stars;
+
+    // Рисуем график по прогрессу
+    const labels = Object.keys(me.progress || {});
+    const done   = labels.map(k => (me.progress[k]?.done || []).length);
+    const total  = labels.map(k => (me.progress[k]?.total || 0));
+
+    const ctx = document.getElementById('progressChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          { label: 'Пройдено', data: done },
+          { label: 'Всего',    data: total }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'top' } },
+        scales: { y: { beginAtZero: true, precision: 0 } }
+      }
+    });
+
+    // Демо-начисление +5⭐
+    const btn = document.getElementById('demo-earn');
+    if (btn) {
+      btn.addEventListener('click', async () => {
+        const form = new FormData(); form.append('inc','5');
+        const resp = await fetch('/earn-stars/', { method:'POST', body:form, headers: {'X-CSRFToken': me.csrftoken} });
+        if (resp.ok) {
+          const data = await resp.json();
+          // анимация числа
+          const from = parseInt($cab.textContent || '0', 10);
+          const to = data.stars;
+          const start = performance.now();
+          (function step(t){
+            const k = Math.min(1, (t - start)/400);
+            const val = Math.round(from + (to - from)*k);
+            $cab.textContent = val;
+            if (document.getElementById('stars-count')) document.getElementById('stars-count').textContent = val;
+            if (k < 1) requestAnimationFrame(step);
+          })(start);
+        }
+      });
+    }
+  }
+})();
+</script>
+{% endblock %}

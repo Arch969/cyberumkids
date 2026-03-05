@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/calendar.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="cal-root"
+     class="cal-container"
+     data-start-ym="{{ ym }}"
+     data-teacher-name="{{ teacher.display_name|default:teacher.username|default:"" }}"
+     data-zoom-link="{{ teacher.zoom_link|default:"" }}"
+     data-zoom-id="{{ teacher.zoom_meeting_id|default:"" }}"
+     data-zoom-pass="{{ teacher.zoom_passcode|default:"" }}">
+  <div class="cal-header">
+    <div class="cal-title">
+      <span class="emoji">📅</span>
+      <h1 id="cal-title">Расписание</h1>
+    </div>
+    <div class="cal-controls">
+      <button id="prev-month" class="btn-pill">← Пред</button>
+      <button id="today-month" class="btn-pill btn-primary">Сегодня</button>
+      <button id="next-month" class="btn-pill">След →</button>
+    </div>
+  </div>
+
+  <div class="cal-legend">
+    <span class="legend-chip chip-green"></span> занятия
+    <span class="legend-chip chip-pink"></span> пройдено
+  </div>
+
+  <div class="weekday-row">
+    <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div>
+  </div>
+
+  <div id="cal-grid" class="cal-grid"></div>
+</div>
+
+<!-- Модалка -->
+<div id="lesson-modal" class="cm-backdrop hidden" aria-hidden="true">
+  <div class="cm-modal" role="dialog" aria-modal="true" aria-labelledby="cm-title">
+    <button class="cm-close" id="cm-close" aria-label="Закрыть">×</button>
+    <div class="cm-header">
+      <div class="cm-emoji">🧑‍🏫</div>
+      <div>
+        <h3 id="cm-title">Урок</h3>
+        <div class="cm-sub" id="cm-subtitle"></div>
+      </div>
+    </div>
+
+    <div id="cm-lessons"></div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/calendar.js' %}"></script>
+{% endblock %}

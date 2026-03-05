@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/dialogue.css' %}">
+
+<!--
+  Новая раскладка:
+  - фон на весь экран ниже шапки
+  - текстовая панель во всю ширину внизу (фиксированная)
+  - персонажи прямо над панелью слева/справа
+  - кнопка "Пропустить" и автоплей
+-->
+<div id="dialogue-root" class="dlg-root" data-autoplay="1">
+  <div id="dlg-bg" class="dlg-bg"></div>
+
+  <!-- Аватары над панелью -->
+  <div id="avatar-left"  class="dlg-avatar side-left"></div>
+  <div id="avatar-right" class="dlg-avatar side-right"></div>
+
+  <!-- Панель диалога по всей ширине -->
+  <div id="dlg-bar" class="dlg-bar">
+    <div class="dlg-bar-inner">
+      <div class="dlg-head">
+        <div id="dlg-name" class="dlg-name"></div>
+        <div class="dlg-actions">
+          <button id="dlg-skip" class="btn-secondary">Пропустить</button>
+          <label class="auto-wrap">
+            <input id="dlg-autoplay" type="checkbox" checked />
+            Автовоспроизведение
+          </label>
+        </div>
+      </div>
+      <div id="dlg-text" class="dlg-text"></div>
+      <div class="dlg-controls">
+        <button id="dlg-next" class="btn-primary big">Далее ▸</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Данные сцены из Django
+  window.DIALOGUE_LINES = {{ lines_json|safe }};
+</script>
+<script src="{% static 'js/dialogue.js' %}"></script>
+
+{% endblock %}

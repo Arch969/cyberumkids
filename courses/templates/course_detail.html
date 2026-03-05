@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="course-hero themed {{ course.theme }}">
+  <div class="bg-decor"></div>
+  <img src="/static/{{ course.img }}" class="hero-icon" alt="{{ course.title }}" />
+  <div>
+    <h1>{{ course.title }}</h1>
+    <p>{{ course.tagline }}</p>
+  </div>
+</section>
+
+<section class="lessons">
+  {% for l in course.lessons %}
+  <div class="lesson-card bubble">
+    <img src="/static/{{ l.img }}" alt="Урок {{ l.n }}" />
+    <div class="lesson-meta">
+      <span class="pill">Урок {{ l.n }}</span>
+      <h4>{{ l.title }}</h4>
+      <button class="btn-primary tiny bouncy" onclick="confettiBurst(event); alert('Демо урок {{ l.n }}');">Открыть</button>
+    </div>
+  </div>
+  {% endfor %}
+</section>
+{% endblock %}

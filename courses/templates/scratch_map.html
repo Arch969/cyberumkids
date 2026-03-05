@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Карта курса Scratch{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/scratch_map.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="hero hero-bright">
+  <h1>Карта курса Scratch 🗺️</h1>
+  <p>Кликай по точкам — кот Скретч отправится к выбранному уровню!</p>
+</section>
+
+<div class="map-wrapper">
+  <!-- Фон-карта: SVG подложка (можете заменить на свой картинкой через CSS) -->
+  <svg class="map-bg" viewBox="0 0 100 56" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <!-- мягкий фон -->
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#b7e3ff"/>
+        <stop offset="100%" stop-color="#e5ffd2"/>
+      </linearGradient>
+      <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+        <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#ffffff66" stroke-width="0.5"/>
+      </pattern>
+    </defs>
+    <rect x="0" y="0" width="100" height="56" fill="url(#sky)"/>
+    <rect x="0" y="0" width="100" height="56" fill="url(#grid)"/>
+    <!-- декоративные «острова» -->
+    <g opacity="0.25">
+      <circle cx="18" cy="44" r="8" fill="#7bd97b"/>
+      <circle cx="42" cy="14" r="10" fill="#7bd97b"/>
+      <circle cx="78" cy="36" r="12" fill="#7bd97b"/>
+    </g>
+  </svg>
+
+  <!-- Слой с уровнями и котом -->
+  <div class="map-stage" id="map-stage" aria-live="polite">
+    <!-- кот -->
+    <div id="cat" class="cat" role="img" aria-label="Кот Скретч" title="Кот Скретч">
+      <!-- по умолчанию используем эмодзи; замените на спрайт -->
+      <div class="cat-emoji">🐱</div>
+      <!-- если добавите картинку:
+      <img src="{% static 'img/scratch-cat.png' %}" alt="Кот Скретч">
+      -->
+    </div>
+    <!-- уровни появятся из JS -->
+  </div>
+
+  <!-- панелька прогресса -->
+  <div class="hud">
+    <div><strong>Текущий уровень:</strong> <span id="hud-current">1</span></div>
+    <div><strong>Открыто:</strong> <span id="hud-unlocked">1</span> / <span id="hud-total">5</span></div>
+    <button class="btn-primary tiny" id="reset-progress">Сбросить прогресс</button>
+  </div>
+</div>
+
+<!-- модалка карточки уровня -->
+<div class="level-modal" id="level-modal" aria-hidden="true">
+  <div class="level-modal__content">
+    <button class="level-modal__close" id="modal-close" aria-label="Закрыть">✖</button>
+    <h3 id="modal-title">Уровень</h3>
+    <p id="modal-desc">Короткое описание уровня.</p>
+    <div class="modal-actions">
+      <a id="modal-start" class="btn-primary" href="#">Перейти к уроку</a>
+      <button id="modal-cancel" class="btn-ghost">Позже</button>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/scratch_map.js' %}"></script>
+{% endblock %}

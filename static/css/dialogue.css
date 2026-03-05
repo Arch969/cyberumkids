@@ -1,0 +1,111 @@
+:root {
+  --hdr-h: 64px;    /* вычислим в JS по факту */
+  --bar-h: 180px;   /* вычислим в JS по факту */
+}
+
+/* Корень: фиксируем во весь экран ниже шапки */
+.dlg-root {
+  position: fixed;
+  left: 0; right: 0;
+  top: var(--hdr-h);
+  height: calc(100vh - var(--hdr-h));
+  z-index: 0;
+}
+
+/* Фон на всю область сцены */
+.dlg-bg {
+  position: absolute; inset: 0;
+  background: #eaf3ff center/cover no-repeat;
+  transition: background-image .3s ease, opacity .3s ease;
+  z-index: 0;
+}
+
+/* Панель диалога снизу во всю ширину */
+.dlg-bar {
+  position: absolute; left: 0; right: 0;
+  bottom: 0;
+  z-index: 3;
+  /* «стеклянная» полоса на всю ширину */
+  background: #ffffffdc;
+  backdrop-filter: blur(10px);
+  border-top: 2px solid #E2E8F0;
+}
+
+.dlg-bar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 18px 18px;
+}
+
+.dlg-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.dlg-name {
+  font-weight: 900;
+  font-size: 22px;
+  color: #0f172a;
+}
+
+.auto-wrap {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-weight: 700; color: #0f172a;
+}
+
+.dlg-text {
+  /* БОЛЬШОЙ ТЕКСТ */
+  font-size: 22px;
+  line-height: 1.6;
+  color: #1f2a44;
+  min-height: 4.6em;       /* чтобы панель не «прыгала» во время печати */
+  white-space: pre-wrap;
+}
+
+.dlg-controls { display: flex; justify-content: flex-end; margin-top: 10px; }
+
+/* Кнопки */
+.btn-primary.big { padding: 12px 18px; border: 0; border-radius: 14px; font-weight: 900; cursor: pointer;
+  background: linear-gradient(90deg,#22c55e,#16a34a); color: #fff; }
+.btn-primary.big:hover { filter: brightness(1.06) }
+
+.btn-secondary { padding: 8px 12px; border-radius: 12px; border: 2px solid #cbd5e1;
+  background: #fff; color: #0f172a; font-weight: 800; cursor: pointer; }
+.btn-secondary:hover { background: #f8fafc }
+
+/* Аватары — прямо над панелью, слева/справа */
+.dlg-avatar {
+  position: absolute;
+  bottom: calc(var(--bar-h) + 12px);
+  width: min(22vh, 220px);
+  height: min(22vh, 220px);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,.18));
+  opacity: 0;
+  transform: translateY(10px) scale(.96);
+  transition: opacity .25s, transform .25s;
+  z-index: 2;
+}
+
+.dlg-avatar.side-left  { left: 16px; }
+.dlg-avatar.side-right { right: 16px; }
+
+.dlg-avatar.show { opacity: 1; transform: translateY(0) scale(1); }
+
+/* Адаптив */
+@media (max-width: 920px) {
+  .dlg-name { font-size: 20px; }
+  .dlg-text { font-size: 20px; }
+}
+
+@media (max-width: 640px) {
+  .dlg-avatar { width: min(28vh, 180px); height: min(28vh, 180px); }
+  .dlg-text { font-size: 18px; }
+}
+
+/* Хелпер, если шапка выше/ниже — JS выставит --hdr-h и --bar-h */

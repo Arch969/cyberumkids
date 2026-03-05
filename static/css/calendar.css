@@ -1,0 +1,143 @@
+.cal-container{ max-width:1100px; margin:18px auto; padding:0 18px; }
+
+.cal-header{
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+  background:linear-gradient(180deg, rgba(233,246,255,.85), rgba(255,255,255,.95));
+  border:2px solid #E2E8F0; border-radius:28px; padding:16px 18px;
+  box-shadow:0 12px 30px rgba(2,8,23,.06);
+}
+
+.cal-title{ display:flex; align-items:center; gap:12px; }
+.cal-title h1{ margin:0; font-size:28px; font-weight:900; color:#0F172A }
+.cal-title .emoji{ font-size:28px; }
+
+.cal-controls{ display:flex; gap:10px; }
+.btn-pill{
+  border:2px solid #E2E8F0; background:#fff; border-radius:999px;
+  padding:10px 14px; font-weight:900; color:#0F172A; cursor:pointer;
+  box-shadow:0 6px 16px rgba(2,8,23,.04);
+}
+.btn-pill:hover{ background:#F8FAFF }
+.btn-primary{ background:linear-gradient(90deg, #22c55e, #16a34a); color:#fff; border-color:transparent; }
+
+.cal-legend{
+  display:flex; gap:12px; align-items:center; color:#5C6C8C; font-weight:800;
+  margin:10px 6px 12px 6px;
+}
+.legend-chip{
+  width:16px; height:16px; border-radius:999px; border:2px solid #E2E8F0; display:inline-block;
+  box-shadow:0 4px 10px rgba(2,8,23,.06); margin-right:6px;
+}
+.chip-green{ background:#ECFDF5; border-color:#BBF7D0 }
+.chip-pink { background:#FFF0F6; border-color:#FFD1E1 }
+
+.weekday-row{
+  display:grid; grid-template-columns:repeat(7,1fr);
+  margin:0 6px 8px 6px; color:#64748B; font-weight:900; text-align:center;
+}
+
+.cal-grid{
+  display:grid; grid-template-columns:repeat(7,1fr);
+  gap:10px; padding:6px; border-radius:28px;
+  background:
+    radial-gradient(900px 400px at 10% -10%, rgba(110,200,255,.18), transparent 60%),
+    radial-gradient(700px 600px at -10% 100%, rgba(255,116,183,.14), transparent 60%), #FFFFFF;
+}
+
+.cal-cell{
+  min-height:120px; border:2px solid #E2E8F0; border-radius:22px; padding:10px;
+  background:rgba(255,255,255,.92); backdrop-filter: blur(8px);
+  box-shadow:0 10px 24px rgba(2,8,23,.05); position:relative; overflow:hidden;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.cal-cell:hover{ transform:translateY(-2px); box-shadow:0 14px 30px rgba(2,8,23,.08) }
+
+.cal-cell-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+.cal-date{ font-weight:900; color:#0F172A; font-size:16px; }
+.cal-weekday{ color:#64748B; font-weight:800; font-size:12px }
+
+.cal-events{ display:flex; flex-direction:column; gap:6px }
+
+.event-pill{
+  display:inline-flex; align-items:center; gap:8px;
+  max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  padding:8px 12px; border-radius:999px; font-size:12px; font-weight:900;
+  box-shadow:0 6px 16px rgba(2,8,23,.06);
+}
+.event-pill.green{ background:#ECFDF5; border:2px solid #BBF7D0; color:#064E3B }
+.event-pill.pink { background:#FFF0F6; border:2px solid #FFD1E1; color:#9F1239 }
+.event-pill .time{ font-weight:900; margin-right:2px; }
+
+
+/* Время в ячейке — КРУПНО */
+.time-pill{
+  display:inline-block;
+  padding:12px 14px;
+  border-radius:999px;
+  font-weight:900;
+  font-size:18px;             /* ← больше размер */
+  background:#ECFDF5;
+  border:2px solid #BBF7D0;
+  color:#065F46;
+  box-shadow:0 6px 16px rgba(2,8,23,.06);
+}
+
+/* Модалка */
+.cm-backdrop{ position:fixed; inset:0; background:rgba(10,20,40,.38); display:flex; align-items:center; justify-content:center; z-index:1000; }
+.cm-backdrop.hidden{ display:none }
+.cm-modal{
+  width:min(680px, 92vw);
+  background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,255,.96));
+  border:2px solid #E2E8F0; border-radius:28px;
+  box-shadow:0 24px 60px rgba(2,8,23,.25); padding:18px; position:relative;
+}
+.cm-close{ position:absolute; right:14px; top:10px; width:34px; height:34px; border-radius:999px; border:2px solid #E2E8F0; background:#fff; cursor:pointer; font-size:18px; font-weight:900; }
+.cm-header{ display:flex; align-items:center; gap:12px; margin-bottom:10px }
+.cm-emoji{ font-size:28px }
+.cm-sub{ color:#64748B; font-weight:800 }
+.cm-card{ background:#fff; border:2px solid #E2E8F0; border-radius:20px; padding:14px; margin-top:10px; box-shadow:0 10px 24px rgba(2,8,23,.06); }
+.cm-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:8px }
+.cm-btn{ border:0; border-radius:999px; padding:10px 16px; font-weight:900; cursor:pointer; background:linear-gradient(90deg,#22c55e,#16a34a); color:#fff; }
+.cm-ghost{ border:2px solid #E2E8F0; background:#fff; color:#0F172A; border-radius:999px; padding:10px 16px; font-weight:900; cursor:pointer; }
+.cm-field{ display:flex; align-items:center; gap:8px; background:#F8FAFF; border:2px dashed #E2E8F0; border-radius:12px; padding:8px 10px; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-weight:800; }
+.cm-copy{ border:2px solid #E2E8F0; background:#fff; border-radius:10px; padding:6px 10px; cursor:pointer }
+.cm-hint{ margin-top:12px; color:#94A3B8; font-weight:700; font-size:12px }
+
+
+/* время в ячейке по центру */
+.cal-events{ display:flex; flex-direction:column; gap:6px; align-items:center; }
+
+.time-pill{
+  padding:12px 14px; border-radius:999px; font-weight:900; font-size:20px;
+  background:#ECFDF5; border:2px solid #BBF7D0; color:#065F46;
+  box-shadow:0 6px 16px rgba(2,8,23,.06);
+}
+
+/* модалка: аватар учителя */
+.cm-teacher{ display:flex; align-items:center; gap:12px; margin:6px 0 4px }
+.cm-avatar{
+  width:56px; height:56px; border-radius:999px; object-fit:cover;
+  border:3px solid #E2E8F0; box-shadow:0 6px 16px rgba(2,8,23,.08);
+  background:#F1F5F9;
+}
+.cm-tname{ font-weight:900; color:#0F172A }
+
+
+
+
+/* уже есть: центрирование времени */
+.cal-events{
+  display:flex; flex-direction:column; gap:6px; align-items:center;
+}
+
+/* Бейдж «пройдено» в углу ячейки */
+.done-badges{
+  position:absolute; right:10px; bottom:8px; display:flex; gap:6px;
+}
+.done-chip{
+  min-width:24px; height:24px; padding:0 8px;
+  display:inline-flex; align-items:center; justify-content:center;
+  border-radius:999px; font-weight:900; font-size:12px;
+  background:#FFF0F6; border:2px solid #FFD1E1; color:#9F1239;
+  box-shadow:0 4px 10px rgba(2,8,23,.06);
+}

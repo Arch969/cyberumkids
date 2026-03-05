@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero hero-bright">
+  <h1>Выбери свой курс ✨</h1>
+  <p>Наведись — карточки оживут! Кликни — полетит конфетти 🎉</p>
+</section>
+
+<section class="grid-courses">
+  {% for c in courses %}
+  <a href="/courses/{{ c.slug }}/" class="course-card {{ c.theme }}" data-color="{{ c.color }}" data-slug="{{ c.slug }}">
+    <div class="decors"></div>
+    <img src="/static/{{ c.img }}" alt="{{ c.title }}" class="course-img" />
+    <div class="course-info">
+      <h3>{{ c.title }}</h3>
+      <p>{{ c.tagline }}</p>
+    </div>
+  </a>
+  {% endfor %}
+</section>
+{% endblock %}
